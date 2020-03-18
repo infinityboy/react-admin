@@ -111,9 +111,6 @@ module.exports = {
     }),
   ],
   resolve: {
-    extensions: [".js", ".jsx", ".less", ".css", ".wasm"], //后缀名自动补全
-    alias: {
-      "@": path.resolve(__dirname, "src"),
-    },
+    extensions: [".js", ".jsx", ".ts", ".tsx", ".less", ".css", ".wasm"], //后缀名自动补全
   },
 };

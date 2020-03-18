@@ -11,7 +11,7 @@ export default {
   state: {
     menus: [], // 所有的菜单信息（用于菜单管理，无视权限）
     roles: [], // 所有的角色信息（用于Model赋予项，无视权限）
-    powerTreeData: [] // 分配权限treeTable组件所需原始数据
+    powerTreeData: [], // 分配权限treeTable组件所需原始数据
   },
   reducers: {
     // 保存所有菜单数据
@@ -26,7 +26,7 @@ export default {
     // 保存所有权限数据
     reducerSetAllPowers(state, payload) {
       return { ...state, powerTreeData: payload };
-    }
+    },
   },
 
   effects: dispatch => ({
@@ -97,9 +97,7 @@ export default {
      * **/
     async getPowerDataByMenuId(params = {}) {
       try {
-        const res = await axios.get(
-          `/api/getpowerbymenuid?${qs.stringify(params)}`
-        );
+        const res = await axios.get(`/api/getpowerbymenuid?${qs.stringify(params)}`);
         return res;
       } catch (err) {
         message.error("网络错误，请重试");
@@ -233,10 +231,7 @@ export default {
      * **/
     async findAllPowerByRoleId(params = {}) {
       try {
-        const res = await axios.get(
-          `/api/findAllPowerByRoleId?${qs.stringify(params)}`,
-          params
-        );
+        const res = await axios.get(`/api/findAllPowerByRoleId?${qs.stringify(params)}`, params);
         return res;
       } catch (err) {
         message.error("网络错误，请重试");
@@ -248,10 +243,7 @@ export default {
      * **/
     async getAllPowers(params = {}) {
       try {
-        const res = await axios.post(
-          `/api/getAllPowers?${qs.stringify(params)}`,
-          params
-        );
+        const res = await axios.post(`/api/getAllPowers?${qs.stringify(params)}`, params);
         if (res.status === 200) {
           this.reducerSetAllPowers(res.data);
         }
@@ -345,6 +337,6 @@ export default {
       } catch (err) {
         message.error("网络错误，请重试");
       }
-    }
-  })
+    },
+  }),
 };

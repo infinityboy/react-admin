@@ -5,7 +5,7 @@
 /**
  * 用于菜单选图标的图标数据
  * **/
-export const IconsData = [
+export const IconsData: string[] = [
   "icon-Dollar",
   "icon-compass",
   "icon-EURO",
@@ -55,5 +55,5 @@ export const IconsData = [
   "icon-cloud",
   "icon-crown",
   "icon-desktop",
-  "icon-gift"
+  "icon-gift",
 ];

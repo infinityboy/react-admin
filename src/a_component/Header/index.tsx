@@ -18,15 +18,23 @@ import {
   GithubOutlined,
   ChromeOutlined,
   LogoutOutlined,
-  SmileOutlined
+  SmileOutlined,
 } from "@ant-design/icons";
 import "./index.less";
 const { Header } = Layout;
-export default class HeaderCom extends React.PureComponent {
-  constructor(props) {
+
+interface Props {
+  onToggle: Function;
+  onLogout: Function;
+  userinfo: any;
+  collapsed: boolean;
+}
+
+export default class HeaderCom extends React.PureComponent<Props> {
+  constructor(props: Props) {
     super(props);
     this.state = {
-      fullScreen: false // 当前是否是全屏状态
+      fullScreen: false, // 当前是否是全屏状态
     };
   }
 
@@ -56,7 +64,7 @@ export default class HeaderCom extends React.PureComponent {
       }
     }
     this.setState({
-      fullScreen: true
+      fullScreen: true,
     });
   };
 
@@ -79,7 +87,7 @@ export default class HeaderCom extends React.PureComponent {
       }
     }
     this.setState({
-      fullScreen: false
+      fullScreen: false,
     });
   };
 
@@ -97,58 +105,31 @@ export default class HeaderCom extends React.PureComponent {
     const u = this.props.userinfo.userBasicInfo;
     return (
       <Header className="header">
-        <Tooltip
-          placement="bottom"
-          title={this.props.collapsed ? "展开菜单" : "收起菜单"}
-        >
-          <MenuFoldOutlined
-            className={this.props.collapsed ? "trigger fold" : "trigger"}
-            onClick={this.toggle}
-          />
+        <Tooltip placement="bottom" title={this.props.collapsed ? "展开菜单" : "收起菜单"}>
+          <MenuFoldOutlined className={this.props.collapsed ? "trigger fold" : "trigger"} onClick={this.toggle} />
         </Tooltip>
         <div className="rightBox">
-          <Tooltip
-            placement="bottom"
-            title={this.state.fullScreen ? "退出全屏" : "全屏"}
-          >
+          <Tooltip placement="bottom" title={this.state.fullScreen ? "退出全屏" : "全屏"}>
             <div className="full all_center">
               {this.state.fullScreen ? (
-                <FullscreenExitOutlined
-                  className="icon"
-                  onClick={this.exitFullScreen}
-                />
+                <FullscreenExitOutlined className="icon" onClick={this.exitFullScreen} />
               ) : (
-                <FullscreenOutlined
-                  className="icon"
-                  onClick={this.requestFullScreen}
-                />
+                <FullscreenOutlined className="icon" onClick={this.requestFullScreen} />
               )}
             </div>
           </Tooltip>
           {u ? (
             <Dropdown
               overlay={
-                <Menu
-                  className="menu"
-                  selectedKeys={[]}
-                  onClick={this.onMenuClick}
-                >
+                <Menu className="menu" selectedKeys={[]} onClick={this.onMenuClick}>
                   <Menu.Item>
-                    <a
-                      href="https://blog.isluo.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                    <a href="https://blog.isluo.com" target="_blank" rel="noopener noreferrer">
                       <ChromeOutlined />
                       blog.isluo.com
                     </a>
                   </Menu.Item>
                   <Menu.Item>
-                    <a
-                      href="https://github.com/javaLuo/react-admin"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                    <a href="https://github.com/javaLuo/react-admin" target="_blank" rel="noopener noreferrer">
                       <GithubOutlined />
                       GitHub
                     </a>
@@ -160,8 +141,7 @@ export default class HeaderCom extends React.PureComponent {
                   </Menu.Item>
                 </Menu>
               }
-              placement="bottomRight"
-            >
+              placement="bottomRight">
               <div className="userhead all_center">
                 <SmileOutlined />
                 <span className="username">{u.username}</span>

@@ -9,22 +9,22 @@ import tools from "@/util/tools";
 /** 本页面所需页面级组件 **/
 import BasicLayout from "@/layouts/BasicLayout";
 import UserLayout from "@/layouts/UserLayout";
-/** 普通组件 **/
 import { message } from "antd";
+
 message.config({
   // 全局提示只显示2秒
-  duration: 2
+  duration: 2,
 });
 
 const history = createHistory();
-@connect(
-  state => ({ userinfo: state.app.userinfo }),
-  dispatch => ({
-    setUserInfo: dispatch.app.setUserInfo
-  })
-)
-export default class RouterContainer extends React.Component {
-  constructor(props) {
+
+interface Props {
+  userinfo: any;
+  setUserInfo: Function;
+}
+
+class RouterContainer extends React.Component<Props> {
+  constructor(props: Props) {
     super(props);
   }
 
@@ -40,7 +40,7 @@ export default class RouterContainer extends React.Component {
   }
 
   /** 跳转到某个路由之前触发 **/
-  onEnter(Component, props) {
+  onEnter(Component: any, props: any) {
     /**
      *  有用户信息，说明已登录
      *  没有，则跳转至登录页
@@ -60,10 +60,7 @@ export default class RouterContainer extends React.Component {
             return (
               <Switch>
                 <Route path="/user" component={UserLayout} />
-                <Route
-                  path="/"
-                  render={props => this.onEnter(BasicLayout, props)}
-                />
+                <Route path="/" render={props => this.onEnter(BasicLayout, props)} />
               </Switch>
             );
           }}
@@ -72,3 +69,10 @@ export default class RouterContainer extends React.Component {
     );
   }
 }
+
+export default connect(
+  (state: RootStore) => ({ userinfo: state.app.userinfo }),
+  (dispatch: any) => ({
+    setUserInfo: dispatch.app.setUserInfo,
+  }),
+)(RouterContainer);

@@ -4,8 +4,13 @@ import { Layout } from "antd";
 import "./index.less";
 
 const { Footer } = Layout;
-export default class Com extends React.PureComponent {
-  constructor(props) {
+
+interface Props {
+  className?: string;
+}
+
+export default class Com extends React.PureComponent<Props> {
+  constructor(props: Props) {
     super(props);
     this.state = {};
   }
@@ -14,11 +19,7 @@ export default class Com extends React.PureComponent {
     return (
       <Footer className={`footer ${this.props.className}`}>
         © 2018-2020{" "}
-        <a
-          href="https://blog.isluo.com"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a href="https://blog.isluo.com" target="_blank" rel="noopener noreferrer">
           blog.isluo.com
         </a>
         , Inc.
@@ -26,5 +27,3 @@ export default class Com extends React.PureComponent {
     );
   }
 }
-
-Com.propTypes = {};

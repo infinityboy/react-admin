@@ -6,21 +6,27 @@
 import axios from "@/util/axios"; // 自己写的工具函数，封装了请求数据的通用接口
 import { message } from "antd";
 
+interface UserInfo {
+  roles: any[];
+  menus: any[];
+  powers: any[];
+}
+
 export default {
   state: {
     userinfo: {
       roles: [], // 当前用户拥有的角色
       menus: [], // 当前用户拥有的已授权的菜单
-      powers: [] // 当前用户拥有的权限数据
+      powers: [], // 当前用户拥有的权限数据
     }, // 当前用户基本信息
-    powersCode: [] // 当前用户拥有的权限code列表(仅保留了code)，页面中的按钮的权限控制将根据此数据源判断
+    powersCode: [], // 当前用户拥有的权限code列表(仅保留了code)，页面中的按钮的权限控制将根据此数据源判断
   },
   reducers: {
     reducerUserInfo(state, payload) {
       return {
         ...state,
         userinfo: payload,
-        powersCode: payload.powers.map(item => item.code)
+        powersCode: payload.powers.map(item => item.code),
       };
     },
     reducerLogout(state, payload) {
@@ -29,10 +35,10 @@ export default {
         userinfo: {
           menus: [],
           roles: [],
-          powers: []
-        }
+          powers: [],
+        },
       };
-    }
+    },
   },
 
   effects: dispatch => ({
@@ -79,7 +85,7 @@ export default {
       const userinfo = rootState.app.userinfo;
 
       const res2 = await dispatch.sys.getRoleById({
-        id: userinfo.roles.map(item => item.id)
+        id: userinfo.roles.map(item => item.id),
       });
       if (!res2 || res2.status !== 200) {
         // 角色查询失败
@@ -89,12 +95,9 @@ export default {
       const roles = res2.data.filter(item => item.conditions === 1);
 
       /** 3.根据菜单id 获取菜单信息 **/
-      const menuAndPowers = roles.reduce(
-        (a, b) => [...a, ...b.menuAndPowers],
-        []
-      );
+      const menuAndPowers = roles.reduce((a, b) => [...a, ...b.menuAndPowers], []);
       const res3 = await dispatch.sys.getMenusById({
-        id: Array.from(new Set(menuAndPowers.map(item => item.menuId)))
+        id: Array.from(new Set(menuAndPowers.map(item => item.menuId))),
       });
       if (!res3 || res3.status !== 200) {
         // 查询菜单信息失败
@@ -104,9 +107,7 @@ export default {
 
       /** 4.根据权限id，获取权限信息 **/
       const res4 = await dispatch.sys.getPowerById({
-        id: Array.from(
-          new Set(menuAndPowers.reduce((a, b) => [...a, ...b.powers], []))
-        )
+        id: Array.from(new Set(menuAndPowers.reduce((a, b) => [...a, ...b.powers], []))),
       });
       if (!res4 || res4.status !== 200) {
         // 权限查询失败
@@ -117,8 +118,8 @@ export default {
         ...userinfo,
         roles,
         menus,
-        powers
+        powers,
       });
-    }
-  })
+    },
+  }),
 };
